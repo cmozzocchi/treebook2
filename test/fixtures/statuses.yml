@@ -1,9 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  content: 
+  content: test
   user: chris
 
 two:
-  content: 
+  content: test
   user: chris
+
+three:
+  content: testing again
+  user: jim

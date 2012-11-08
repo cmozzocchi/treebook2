@@ -3,3 +3,12 @@ chris:
  last_name: "Mozzocchi"
  profile_name: "cmozz"
  email: 'cmozzocchi@gmail.com'
+
+jim:
+ first_name: 'Jim'
+ last_name: 'Bobson'
+ profile_name: 'jimbobson'
+ email: 'jimbobson@gmail.com'
+
+
+
