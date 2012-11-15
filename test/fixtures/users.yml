@@ -10,5 +10,9 @@ jim:
  profile_name: 'jimbobson'
  email: 'jimbobson@gmail.com'
 
-
+mike:
+ first_name: 'mike'
+ last_name: 'the Frog'
+ profile_name: 'mike the frog'
+ email: 'mikethefrog@treehouse.com'
 
