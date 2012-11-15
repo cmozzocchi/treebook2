@@ -5,9 +5,5 @@ one:
   user: chris
 
 two:
-  content: test
-  user: chris
-
-three:
   content: testing again
   user: jim
