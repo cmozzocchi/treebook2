@@ -17,6 +17,8 @@ group :production do
 	gem 'pg'
 end
 
+gem 'quiet_assets'
+
 gem 'devise'
 
 gem 'simple_form'

@@ -29,6 +29,12 @@ class User < ActiveRecord::Base
   	first_name + " " + last_name
   end
 
+  def to_param
+    profile_name
+  end
+
+
+
   def gravitar_url
     stripped_email = email.strip
     downcased_email = stripped_email.downcase
