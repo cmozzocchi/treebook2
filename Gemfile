@@ -5,8 +5,16 @@ gem 'rails', '3.2.8'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+gem 'quiet_assets'
+gem 'devise'
+gem 'simple_form'
+gem 'state_machine'
+
+
+
 group :test do
   gem 'shoulda'
+  gem 'factory_girl_rails'
 end
 
 group :development, :test do 
@@ -16,12 +24,6 @@ end
 group :production do
 	gem 'pg'
 end
-
-gem 'quiet_assets'
-
-gem 'devise'
-
-gem 'simple_form'
 
 # Gems used only for assets and not required
 # in production environments by default.
