@@ -14,6 +14,7 @@ class UserFriendshipsControllerTest < ActionController::TestCase
       setup do
         sign_in users(:chris)
       end
+      
       should "get new and return 200" do
         get :new
         assert_response :success
