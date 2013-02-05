@@ -11,7 +11,7 @@ class UserFriendshipTest < ActiveSupport::TestCase
     end
   end
 
-  test "that creatinga  friendship based on user id and friend id works" do 
+  test "that creating a friendship based on user id and friend id works" do 
     UserFriendship.create user_id: users(:chris).id, friend_id: users(:mike).id
     users(:chris).friends << users(:mike)
     assert users(:chris).pending_friends.include?(users(:mike))
@@ -39,9 +39,39 @@ class UserFriendshipTest < ActiveSupport::TestCase
     end
   end
 
+  context '#mutual_friendship' do 
+    setup do 
+      UserFriendship.request users(:chris), users(:jim)
+      @friendship1 = users(:chris).user_friendships.where(friend_id: users(:jim).id).first
+      @friendship2 = users(:jim).user_friendships.where(friend_id: users(:chris).id).first
+    end
+    
+    should 'correctly find the mutual friendship' do 
+      assert_equal @friendship2, @friendship1.mutual_friendship
+    end
+  end
+
+
+  context "#accept_mutual_friendship!" do 
+    setup do 
+      UserFriendship.request users(:chris), users(:jim)
+    end
+    
+    should 'accept the mutual friendship' do 
+      friendship1 = users(:chris).user_friendships.where(friend_id: users(:jim).id).first
+      friendship2 = users(:jim).user_friendships.where(friend_id: users(:chris).id).first
+
+      friendship1.accept_mutual_friendship!
+      friendship2.reload
+      assert_equal 'accepted', friendship2.state
+    end
+
+  end
+
+
   context "#accept!" do 
     setup do 
-      @user_friendship = UserFriendship.create user: users(:chris), friend: users(:mike)
+      @user_friendship = UserFriendship.request users(:chris), users(:mike)
     end
 
     should "set the state to accepted" do 
@@ -60,6 +90,12 @@ class UserFriendshipTest < ActiveSupport::TestCase
       users(:chris).friends.reload
       assert users(:chris).friends.include?(users(:mike))
     end
+
+    should  'accept the mutual friendship' do 
+      @user_friendship.accept!
+      assert_equal 'accepted', @user_friendship.mutual_friendship.state
+    end
+
   end
 
   context ".request" do 
@@ -73,6 +109,33 @@ class UserFriendshipTest < ActiveSupport::TestCase
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do 
         UserFriendship.request(users(:chris), users(:mike))
       end
+    end
+  end
+
+  context '#delete_mutual_friendship!' do 
+    setup do
+      UserFriendship.request users(:chris), users(:jim)
+      @friendship1 = users(:chris).user_friendships.where(friend_id: users(:jim).id).first
+      @friendship2 = users(:jim).user_friendships.where(friend_id: users(:chris).id).first
+    end
+
+    should 'delete the mutual friendship' do 
+      assert_equal @friendship2, @friendship1.mutual_friendship
+      @friendship1.delete_mutual_friendship!
+      assert !UserFriendship.exists?(@friendship2.id)
+    end
+  end
+
+  context 'on destroy' do 
+    setup do
+      UserFriendship.request users(:chris), users(:jim)
+      @friendship1 = users(:chris).user_friendships.where(friend_id: users(:jim).id).first
+      @friendship2 = users(:jim).user_friendships.where(friend_id: users(:chris).id).first
+    end
+
+    should 'delete the mutual friendship' do 
+      @friendship1.destroy
+      assert !UserFriendship.exists?(@friendship2.id)
     end
   end
 

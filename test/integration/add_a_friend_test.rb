@@ -5,7 +5,6 @@ class AddAFriendTest < ActionDispatch::IntegrationTest
     post login_path, user: {email: user.email, password: password}
   end
 
-
   test "that adding a friend works" do 
     sign_in_as users(:chris), "password"
     get "/user_friendships/new?friend_id=#{users(:jim).profile_name}"
